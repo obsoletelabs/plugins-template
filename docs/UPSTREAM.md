@@ -1,5 +1,16 @@
 # Tooling provenance and deliberate comparison
 
+## CI host reference repair (9 October 2026)
+
+Both blocking CI jobs now clone the [new application repository](https://github.com/obsoletelabs/unnamed_tracking_app_2)
+and pin revision `ac9a2633807490dfc7feec70d949c3d37ed4ba99`. The earlier
+`6bae984ce7590903e9144e4301ffa1b0fe65c809` checkout is unavailable from the
+original repository's clone, so both jobs stopped before host conformance.
+The replacement preserves a fixed public host target and retains package,
+worker lifecycle, authenticated installation and permission checks. SDK,
+schemas and plugin source remain unchanged; the new CI run validates their
+compatibility with this host revision.
+
 ## Gateway error helper synchronization (6 October 2026)
 
 The public SDK helper is synchronized verbatim with companion revision

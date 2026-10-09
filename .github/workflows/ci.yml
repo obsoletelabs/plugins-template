@@ -45,8 +45,8 @@ jobs:
           fi
       - name: Verify with the actual public host contract
         run: |
-          git clone --no-checkout https://github.com/Rosefall-a/unnamed_tracking_app.git .validation/host
-          git -C .validation/host checkout 6bae984ce7590903e9144e4301ffa1b0fe65c809
+          git clone --no-checkout https://github.com/obsoletelabs/unnamed_tracking_app_2.git .validation/host
+          git -C .validation/host checkout ac9a2633807490dfc7feec70d949c3d37ed4ba99
           python tools/check_host_contract.py --host-root .validation/host
       - name: Check real starter worker lifecycle on Linux
         env:
@@ -94,8 +94,8 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - name: Obtain pinned public host
         run: |
-          git clone --no-checkout https://github.com/Rosefall-a/unnamed_tracking_app.git .validation/host
-          git -C .validation/host checkout 6bae984ce7590903e9144e4301ffa1b0fe65c809
+          git clone --no-checkout https://github.com/obsoletelabs/unnamed_tracking_app_2.git .validation/host
+          git -C .validation/host checkout ac9a2633807490dfc7feec70d949c3d37ed4ba99
       - run: python -m pip install -r requirements-dev.txt -r .validation/host/src/backend/requirements.txt
       - name: Fresh independent developer through authenticated installation and live grants
         run: python tools/check_host_http.py --host-root .validation/host --work-root "${{ runner.temp }}/template-http"
