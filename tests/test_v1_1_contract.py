@@ -34,7 +34,10 @@ def consent(manifest, name):
 
 def test_starter_targets_v1_1_and_generated_assets_match():
     manifest, files = contract()
-    assert manifest["api_contract_version"] == API_CONTRACT_VERSION == "1.1.0"
+    assert manifest["api_contract_version"] == "1.1.0"
+    # the bundled helper protocol is the current 1.1.x line; a new plugin still declares the
+    # oldest contract it needs, and the SDK range admits every 1.1.x helper
+    assert API_CONTRACT_VERSION.startswith("1.1.")
     assert manifest["sdk_version_range"] == ">=1.1.0,<1.2.0"
     assert json.loads(files["ui.json"])["api_contract_version"] == "1.1.0"
     assert files["frontend/index.html"].decode() == HTML

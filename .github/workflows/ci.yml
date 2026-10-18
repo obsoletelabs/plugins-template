@@ -46,7 +46,7 @@ jobs:
       - name: Verify with the actual public host contract
         run: |
           git clone --no-checkout https://github.com/obsoletelabs/unnamed_tracking_app_2.git .validation/host
-          git -C .validation/host checkout ac9a2633807490dfc7feec70d949c3d37ed4ba99
+          git -C .validation/host checkout 59d143df8fdf1b4c32ca35fccc9c93646055ad54
           python tools/check_host_contract.py --host-root .validation/host
       - name: Check real starter worker lifecycle on Linux
         env:
@@ -95,7 +95,7 @@ jobs:
       - name: Obtain pinned public host
         run: |
           git clone --no-checkout https://github.com/obsoletelabs/unnamed_tracking_app_2.git .validation/host
-          git -C .validation/host checkout ac9a2633807490dfc7feec70d949c3d37ed4ba99
+          git -C .validation/host checkout 59d143df8fdf1b4c32ca35fccc9c93646055ad54
       - run: python -m pip install -r requirements-dev.txt -r .validation/host/src/backend/requirements.txt
       - name: Fresh independent developer through authenticated installation and live grants
         run: python tools/check_host_http.py --host-root .validation/host --work-root "${{ runner.temp }}/template-http"
