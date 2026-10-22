@@ -1,0 +1,565 @@
+{
+  "$defs": {
+    "ImageCapabilities": {
+      "additionalProperties": false,
+      "properties": {
+        "max_images": {
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Max Images",
+          "type": "integer"
+        },
+        "external_urls": {
+          "default": false,
+          "title": "External Urls",
+          "type": "boolean"
+        },
+        "proxied_urls": {
+          "default": false,
+          "title": "Proxied Urls",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "max_images"
+      ],
+      "title": "ImageCapabilities",
+      "type": "object"
+    },
+    "NotificationDestinationDeclaration": {
+      "additionalProperties": false,
+      "description": "Enrollment choices; independent core proof determines concrete endpoint trust.",
+      "properties": {
+        "kind": {
+          "maxLength": 32,
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "privacy": {
+          "default": "PUBLIC",
+          "enum": [
+            "PUBLIC",
+            "PRIVATE"
+          ],
+          "title": "Privacy",
+          "type": "string"
+        },
+        "fields": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/UiField"
+          },
+          "maxItems": 32,
+          "title": "Fields",
+          "type": "array"
+        },
+        "verification_supported": {
+          "default": false,
+          "title": "Verification Supported",
+          "type": "boolean"
+        },
+        "sensitive_supported": {
+          "default": false,
+          "title": "Sensitive Supported",
+          "type": "boolean"
+        },
+        "recovery_supported": {
+          "default": false,
+          "title": "Recovery Supported",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind",
+        "label"
+      ],
+      "title": "NotificationDestinationDeclaration",
+      "type": "object"
+    },
+    "NotificationProviderCapabilities": {
+      "additionalProperties": false,
+      "description": "What a renderer can present. Declarations never grant trust, proof, consent or grants.",
+      "properties": {
+        "contract_version": {
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "max_batch_items": {
+          "default": 1,
+          "maximum": 50,
+          "minimum": 1,
+          "title": "Max Batch Items",
+          "type": "integer"
+        },
+        "message_updates": {
+          "default": "none",
+          "enum": [
+            "none",
+            "edit",
+            "replace"
+          ],
+          "title": "Message Updates",
+          "type": "string"
+        },
+        "threaded_follow_ups": {
+          "default": false,
+          "title": "Threaded Follow Ups",
+          "type": "boolean"
+        },
+        "text_formats": {
+          "default": [
+            "plain"
+          ],
+          "items": {
+            "enum": [
+              "plain",
+              "markdown",
+              "html_email"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Text Formats",
+          "type": "array"
+        },
+        "rich_embeds": {
+          "default": false,
+          "title": "Rich Embeds",
+          "type": "boolean"
+        },
+        "images": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ImageCapabilities"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "action_buttons": {
+          "default": 0,
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Action Buttons",
+          "type": "integer"
+        },
+        "links": {
+          "default": false,
+          "title": "Links",
+          "type": "boolean"
+        },
+        "live_page_links": {
+          "default": false,
+          "title": "Live Page Links",
+          "type": "boolean"
+        },
+        "max_title_chars": {
+          "default": 500,
+          "maximum": 500,
+          "minimum": 16,
+          "title": "Max Title Chars",
+          "type": "integer"
+        },
+        "max_text_chars": {
+          "default": 10000,
+          "maximum": 100000,
+          "minimum": 64,
+          "title": "Max Text Chars",
+          "type": "integer"
+        },
+        "max_payload_bytes": {
+          "default": 65536,
+          "maximum": 10485760,
+          "minimum": 1024,
+          "title": "Max Payload Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "contract_version"
+      ],
+      "title": "NotificationProviderCapabilities",
+      "type": "object"
+    },
+    "NotificationProviderDefinition": {
+      "additionalProperties": false,
+      "description": "Generic plugin-owned configuration and operations, without credential values.",
+      "properties": {
+        "destinations": {
+          "items": {
+            "$ref": "#/$defs/NotificationDestinationDeclaration"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Destinations",
+          "type": "array"
+        },
+        "server_fields": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/UiField"
+          },
+          "maxItems": 32,
+          "title": "Server Fields",
+          "type": "array"
+        },
+        "configure_action": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$",
+          "title": "Configure Action",
+          "type": "string"
+        },
+        "retire_action": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$",
+          "title": "Retire Action",
+          "type": "string"
+        },
+        "test_action": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-z0-9][a-z0-9._-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Test Action"
+        },
+        "features": {
+          "$ref": "#/$defs/NotificationProviderFeatures"
+        },
+        "capabilities": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NotificationProviderCapabilities"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "edit_action": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-z0-9][a-z0-9._-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Edit Action"
+        }
+      },
+      "required": [
+        "destinations",
+        "configure_action",
+        "retire_action"
+      ],
+      "title": "NotificationProviderDefinition",
+      "type": "object"
+    },
+    "NotificationProviderFeatures": {
+      "additionalProperties": false,
+      "description": "Supported delivery behavior; declarations never confer grants or verification.",
+      "properties": {
+        "critical_supported": {
+          "default": false,
+          "title": "Critical Supported",
+          "type": "boolean"
+        },
+        "critical_description": {
+          "default": "",
+          "maxLength": 500,
+          "title": "Critical Description",
+          "type": "string"
+        },
+        "multiple_destinations": {
+          "default": true,
+          "title": "Multiple Destinations",
+          "type": "boolean"
+        }
+      },
+      "title": "NotificationProviderFeatures",
+      "type": "object"
+    },
+    "UiField": {
+      "additionalProperties": false,
+      "description": "One declarative settings value; secrets are write-only at the host boundary.",
+      "properties": {
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/UiFieldType"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 2000,
+          "title": "Description",
+          "type": "string"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "secret": {
+          "default": false,
+          "title": "Secret",
+          "type": "boolean"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "options": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/UiOption"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "validation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UiValidation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "type"
+      ],
+      "title": "UiField",
+      "type": "object"
+    },
+    "UiFieldType": {
+      "description": "Native field controls supported by the v1 renderer.",
+      "enum": [
+        "text",
+        "textarea",
+        "password",
+        "number",
+        "boolean",
+        "select",
+        "multiselect"
+      ],
+      "title": "UiFieldType",
+      "type": "string"
+    },
+    "UiOption": {
+      "additionalProperties": false,
+      "description": "A non-executable option rendered by a select control.",
+      "properties": {
+        "value": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "label"
+      ],
+      "title": "UiOption",
+      "type": "object"
+    },
+    "UiValidation": {
+      "additionalProperties": false,
+      "description": "Safe client/server validation constraints for a declarative field.",
+      "properties": {
+        "pattern": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pattern"
+        },
+        "min_length": {
+          "anyOf": [
+            {
+              "maximum": 10000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Length"
+        },
+        "max_length": {
+          "anyOf": [
+            {
+              "maximum": 10000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Length"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum"
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum"
+        }
+      },
+      "title": "UiValidation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Versioned registration preserving existing transports and adding generic plugin delivery.",
+  "properties": {
+    "provider_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "title": "Provider Id",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "action_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "title": "Action Id",
+      "type": "string"
+    },
+    "transport": {
+      "default": "legacy",
+      "enum": [
+        "legacy",
+        "discord_webhook",
+        "plugin"
+      ],
+      "title": "Transport",
+      "type": "string"
+    },
+    "definition": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NotificationProviderDefinition"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "provider_id",
+    "name",
+    "action_id"
+  ],
+  "title": "NotificationProviderRegistration",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "x-api-contract-version": "1.1.14"
+}

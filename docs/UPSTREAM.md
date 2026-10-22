@@ -1,5 +1,21 @@
 # Tooling provenance and deliberate comparison
 
+## Synchronization: Contract 1.1.11 (22 October 2026)
+
+Public SDK, exported schemas, and starter contracts synchronized with companion
+revision `91921e5`.
+- Updated `API_CONTRACT_VERSION` to `1.1.11`.
+- Synchronized SDK modules (metadata providers, notification stories, appearance bridge).
+- Synchronized capability schemas for manifest and UI validation.
+
+## Synchronization: Contract 1.1.11 (22 October 2026)
+
+Public SDK, exported schemas, and starter contracts synchronized with companion
+revision `91921e5`.
+- Updated `API_CONTRACT_VERSION` to `1.1.11`.
+- Synchronized SDK modules (metadata providers, notification stories, appearance bridge).
+- Synchronized capability schemas for manifest and UI validation.
+
 ## CI host reference repair (9 October 2026)
 
 Both blocking CI jobs now clone the [new application repository](https://github.com/obsoletelabs/unnamed_tracking_app_2)
