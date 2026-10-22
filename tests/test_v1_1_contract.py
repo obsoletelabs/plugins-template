@@ -34,9 +34,9 @@ def consent(manifest, name):
 
 def test_starter_targets_v1_1_and_generated_assets_match():
     manifest, files = contract()
-    assert manifest["api_contract_version"] == API_CONTRACT_VERSION == "1.1.0"
+    assert manifest["api_contract_version"] == API_CONTRACT_VERSION == "1.1.11"
     assert manifest["sdk_version_range"] == ">=1.1.0,<1.2.0"
-    assert json.loads(files["ui.json"])["api_contract_version"] == "1.1.0"
+    assert json.loads(files["ui.json"])["api_contract_version"] == "1.1.11"
     assert files["frontend/index.html"].decode() == HTML
     assert files["frontend/hello.js"].decode() == JAVASCRIPT
     validate_current_contract(manifest, files)

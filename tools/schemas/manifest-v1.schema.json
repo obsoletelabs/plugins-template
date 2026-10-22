@@ -50,10 +50,28 @@
         "sessions.revoke",
         "sessions.admin",
         "notifications.send",
+        "notifications.emit",
+        "notification_sources.register",
+        "notifications.sensitive",
+        "notifications.canonical",
+        "notifications.actions",
+        "notifications.urgency",
+        "notifications.templates.html",
+        "notifications.lifecycle.read",
+        "notification_destinations.read",
         "notifications",
         "notification_providers",
         "notification_providers.register",
         "notification_providers.deliver",
+        "notification_providers.sensitive",
+        "auth.password_reset",
+        "auth.user_invites",
+        "metadata_providers.register",
+        "metadata_providers.search",
+        "metadata_providers.metadata",
+        "metadata_providers.media",
+        "metadata_providers.health",
+        "metadata_providers.configuration",
         "events.subscribe",
         "tasks.background",
         "sessions.admin.read",
@@ -71,6 +89,7 @@
         "frontend.context.media",
         "frontend.context.documents",
         "frontend.settings",
+        "frontend.connections",
         "frontend.placement.sidebar",
         "frontend.placement.settings.admin",
         "frontend.placement.settings.account",
@@ -83,6 +102,8 @@
         "frontend.shortcuts",
         "frontend.page.replace.home",
         "frontend.page.replace.settings",
+        "frontend.page.replace.sessions",
+        "frontend.page.replace.admin-sessions",
         "frontend.routes",
         "frontend.native",
         "frontend.pwa",
@@ -90,7 +111,10 @@
         "backend.routes.plugin",
         "backend.routes.host",
         "network.outbound",
-        "api.full"
+        "api.full",
+        "integrations.public_app",
+        "integrations.identity_provider",
+        "integrations.public_app.admin"
       ],
       "title": "Capability",
       "type": "string"
@@ -282,6 +306,37 @@
       "title": "PluginFrontendDeclaration",
       "type": "object"
     },
+    "PluginIdentityProviderDeclaration": {
+      "additionalProperties": false,
+      "description": "Explicit trusted adapter actions; no arbitrary provider action forwarding.",
+      "properties": {
+        "config_action_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Config Action Id",
+          "type": "string"
+        },
+        "authenticate_action_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Authenticate Action Id",
+          "type": "string"
+        },
+        "revalidate_action_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Revalidate Action Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "config_action_id",
+        "authenticate_action_id",
+        "revalidate_action_id"
+      ],
+      "title": "PluginIdentityProviderDeclaration",
+      "type": "object"
+    },
     "PluginNativeFrontendDeclaration": {
       "additionalProperties": false,
       "description": "Privileged host-native Vue/JavaScript/CSS bundle declaration.\n\nMerely declaring this bundle never grants native execution. The host only\nserves and activates it for an enabled installation with frontend.native.",
@@ -306,6 +361,37 @@
         "entry"
       ],
       "title": "PluginNativeFrontendDeclaration",
+      "type": "object"
+    },
+    "PluginPublicAppDeclaration": {
+      "additionalProperties": false,
+      "description": "Public assets and one action executed as a separate external principal.",
+      "properties": {
+        "entry": {
+          "maxLength": 255,
+          "pattern": "^frontend/[A-Za-z0-9_./-]+\\.html$",
+          "title": "Entry",
+          "type": "string"
+        },
+        "action_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Action Id",
+          "type": "string"
+        },
+        "identity_provider_plugin_id": {
+          "maxLength": 128,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$",
+          "title": "Identity Provider Plugin Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "entry",
+        "action_id",
+        "identity_provider_plugin_id"
+      ],
+      "title": "PluginPublicAppDeclaration",
       "type": "object"
     },
     "PluginPwaDeclaration": {
@@ -395,6 +481,15 @@
           "maxLength": 128,
           "minLength": 1,
           "title": "Action Id",
+          "type": "string"
+        },
+        "scope": {
+          "default": "server",
+          "enum": [
+            "server",
+            "user"
+          ],
+          "title": "Scope",
           "type": "string"
         },
         "min_interval_minutes": {
@@ -660,6 +755,28 @@
       "maxItems": 32,
       "title": "Scheduled Tasks",
       "type": "array"
+    },
+    "public_app": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PluginPublicAppDeclaration"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "identity_provider": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PluginIdentityProviderDeclaration"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     }
   },
   "required": [

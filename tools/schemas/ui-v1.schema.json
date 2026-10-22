@@ -20,10 +20,28 @@
         "sessions.revoke",
         "sessions.admin",
         "notifications.send",
+        "notifications.emit",
+        "notification_sources.register",
+        "notifications.sensitive",
+        "notifications.canonical",
+        "notifications.actions",
+        "notifications.urgency",
+        "notifications.templates.html",
+        "notifications.lifecycle.read",
+        "notification_destinations.read",
         "notifications",
         "notification_providers",
         "notification_providers.register",
         "notification_providers.deliver",
+        "notification_providers.sensitive",
+        "auth.password_reset",
+        "auth.user_invites",
+        "metadata_providers.register",
+        "metadata_providers.search",
+        "metadata_providers.metadata",
+        "metadata_providers.media",
+        "metadata_providers.health",
+        "metadata_providers.configuration",
         "events.subscribe",
         "tasks.background",
         "sessions.admin.read",
@@ -41,6 +59,7 @@
         "frontend.context.media",
         "frontend.context.documents",
         "frontend.settings",
+        "frontend.connections",
         "frontend.placement.sidebar",
         "frontend.placement.settings.admin",
         "frontend.placement.settings.account",
@@ -53,6 +72,8 @@
         "frontend.shortcuts",
         "frontend.page.replace.home",
         "frontend.page.replace.settings",
+        "frontend.page.replace.sessions",
+        "frontend.page.replace.admin-sessions",
         "frontend.routes",
         "frontend.native",
         "frontend.pwa",
@@ -60,7 +81,10 @@
         "backend.routes.plugin",
         "backend.routes.host",
         "network.outbound",
-        "api.full"
+        "api.full",
+        "integrations.public_app",
+        "integrations.identity_provider",
+        "integrations.public_app.admin"
       ],
       "title": "Capability",
       "type": "string"
@@ -93,7 +117,10 @@
         "game.documents.actions",
         "media.detail.after-header",
         "app.global",
-        "home.replace"
+        "home.replace",
+        "administration.users.actions",
+        "administration.users.settings",
+        "administration.password-policy.after"
       ],
       "title": "HostExtensionSlot",
       "type": "string"
@@ -102,7 +129,9 @@
       "description": "Host pages with explicit page-scoped replacement permissions.",
       "enum": [
         "home",
-        "settings"
+        "settings",
+        "sessions",
+        "admin-sessions"
       ],
       "title": "HostPage",
       "type": "string"
@@ -222,6 +251,96 @@
         "label"
       ],
       "title": "UiAction",
+      "type": "object"
+    },
+    "UiConnectionContribution": {
+      "additionalProperties": false,
+      "description": "A plugin-owned account connection listed on Settings > Account > Connections.\n\nThe host renders the row (name, description, status) and opens ``page_id`` in a\npopup when the user manages the connection, so the full connect, import and\ndisconnect lifecycle stays on the Connections page. ``status_action_id`` is an\noptional declared action the host calls for the signed-in user; it returns a\nbounded object with a boolean ``connected`` and an optional ``display_name`` string.",
+      "properties": {
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 256,
+          "title": "Description",
+          "type": "string"
+        },
+        "page_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "status_action_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-z0-9][a-z0-9._-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Status Action Id"
+        },
+        "sync_action_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-z0-9][a-z0-9._-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sync Action Id"
+        },
+        "icon": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Icon"
+        },
+        "order": {
+          "default": 0,
+          "maximum": 1000,
+          "minimum": -1000,
+          "title": "Order",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "page_id"
+      ],
+      "title": "UiConnectionContribution",
       "type": "object"
     },
     "UiContextLocation": {
@@ -1756,6 +1875,15 @@
       "title": "Settings Sections",
       "type": "array"
     },
+    "connections": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/UiConnectionContribution"
+      },
+      "maxItems": 16,
+      "title": "Connections",
+      "type": "array"
+    },
     "overlays": {
       "default": [],
       "items": {
@@ -1819,5 +1947,7 @@
     "title"
   ],
   "title": "PluginUiDocument",
-  "type": "object"
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "x-api-contract-version": "1.1.11"
 }
